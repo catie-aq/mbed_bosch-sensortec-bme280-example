@@ -15,22 +15,52 @@
  * limitations under the License.
  */
 #include "mbed.h"
-#include "bme280.hpp"
+#include "bme280.h"
 
 namespace {
-#define PERIOD_MS 1000
+#define PERIOD_MS 2000
 }
 
 static I2C i2c(I2C_SDA, I2C_SCL);
 static BME280 bme(&i2c);
-static float temp;
+static double temp;
+static double pressure;
+static double humidity;
+static BME280::SensorMode mode;
+
+void read_print_data(){
+    bme.read_temperature(&temp);
+    bme.read_humidity(&humidity);
+    bme.read_pressure(&pressure);
+
+    printf("Temperature: %.3f °C\n", temp);
+    printf("Pressure:    %.3f Pa\n", pressure);
+    printf("Himidity:   %.3f %%\n", humidity);
+}
 
 int main() {
 
-    bme.initialize();
+    if (!bme.initialize()){
+        printf("Couldn't initialize the BME280...\n=======================\n");
+        return -1;
+    }
+    
+    bme.get_power_mode(&mode);
     while (true){
-        bme.read_temperature(&temp);
-        printf("Temperature: %f\n", temp);
+
+        printf("\nPower mode: "); 
+        switch (static_cast<int>(mode)){
+        case 0:
+            printf("Forced\n");
+            break;
+        case 1:
+            printf("Sleep\n");
+            break;
+        default:
+            printf("Normal\n");
+            break;
+        }
+        read_print_data();
         wait_ms(PERIOD_MS);
     }
 }
