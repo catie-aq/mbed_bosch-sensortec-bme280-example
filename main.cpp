@@ -18,7 +18,7 @@
 #include "bme280.h"
 
 namespace {
-#define PERIOD_MS 4000
+#define PERIOD_MS 1000
 }
 
 static I2C i2c(I2C_SDA, I2C_SCL);
@@ -29,7 +29,7 @@ static double humidity;
 static BME280::SensorMode mode;
 
 void read_print_data(){
-    bme.take_forced_measurement();
+//     bme.take_forced_measurement();
     if (bme.read_temperature(&temp) != 0)
 		return;
 
@@ -50,16 +50,16 @@ int main() {
         return -1;
     }
 
-    bme.set_sampling(BME280::SensorMode::FORCED,
+    bme.set_sampling(BME280::SensorMode::NORMAL,
            BME280::SensorSampling::OVERSAMPLING_X1,
            BME280::SensorSampling::OVERSAMPLING_X1,
            BME280::SensorSampling::OVERSAMPLING_X1,
            BME280::SensorFilter::OFF,
            BME280::StandbyDuration::MS_1000);
     
-    bme280_settings_t settings = bme.get_settings();
-    printf("Settings:\n\tP_os: %d\n\tT_os: %d\n\tH_os: %d\n\tfilter:%d\n\tstandby: %d\n\t",
-            settings.osrs_p, settings.osrs_t, settings.osrs_h, settings.filter, settings.standby_time);
+//     bme280_settings_t settings = bme.get_settings();
+//     printf("Settings:\n\tP_os: %d\n\tT_os: %d\n\tH_os: %d\n\tfilter:%d\n\tstandby: %d\n\t",
+//             settings.osrs_p, settings.osrs_t, settings.osrs_h, settings.filter, settings.standby_time);
 
     while (true){
         printf("\nAlive!\n");
