@@ -21,6 +21,8 @@ namespace {
 #define PERIOD_MS 1000
 }
 
+using namespace sixtron;
+
 static I2C i2c(I2C_SDA, I2C_SCL);
 static BME280 bme(&i2c, BME280::I2CAddress::Address1);
 static double temp;
