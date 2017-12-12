@@ -32,13 +32,10 @@ static BME280::SensorMode mode;
 
 void read_print_data(){
 //     bme.take_forced_measurement();
-    if (bme.read_temperature(&temp) != 0)
-		return;
-
-    if (bme.read_pressure(&pressure) != 0)
-		return;
-
-    if (bme.read_humidity(&humidity) != 0)
+	temp = bme.temperature();
+	pressure = bme.pressure();
+	humidity = bme.humidity();
+    if (isnan(temp) || isnan(pressure) || isnan(humidity))
 		return;
 
     printf("Temperature: %.3f °C\n", temp);
