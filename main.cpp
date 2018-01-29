@@ -26,20 +26,21 @@ using namespace sixtron;
 static I2C i2c(I2C_SDA, I2C_SCL);
 static BME280 bme(&i2c, BME280::I2CAddress::Address1);
 
-int main() {
-    if (!bme.initialize()){
+int main()
+{
+    if (!bme.initialize()) {
         printf("Couldn't initialize the BME280...\n");
         return -1;
     }
 
     bme.set_sampling(BME280::SensorMode::NORMAL,
-           BME280::SensorSampling::OVERSAMPLING_X1,
-           BME280::SensorSampling::OVERSAMPLING_X1,
-           BME280::SensorSampling::OVERSAMPLING_X1,
-           BME280::SensorFilter::OFF,
-           BME280::StandbyDuration::MS_1000);
-    
-    while (true){
+            BME280::SensorSampling::OVERSAMPLING_X1,
+            BME280::SensorSampling::OVERSAMPLING_X1,
+            BME280::SensorSampling::OVERSAMPLING_X1,
+            BME280::SensorFilter::OFF,
+            BME280::StandbyDuration::MS_1000);
+
+    while (true) {
         printf("\n\rAlive!\n");
         printf("Temperature: %.3f °C\n", bme.temperature());
         printf("Pressure:    %.3f hPa\n", (bme.pressure() / 100.0f));
