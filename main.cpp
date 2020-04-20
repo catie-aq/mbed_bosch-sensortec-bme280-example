@@ -45,7 +45,7 @@ int main()
         printf("Temperature: %.3f °C\n", bme.temperature());
         printf("Pressure:    %.3f hPa\n", (bme.pressure() / 100.0f));
         printf("Humidity:    %.3f %%\n", bme.humidity());
-        wait_ms(PERIOD_MS);
+        ThisThread::sleep_for(PERIOD_MS);
     }
 
 }
