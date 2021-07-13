@@ -18,12 +18,12 @@
 #include "bme280.h"
 
 namespace {
-#define PERIOD_MS 1000
+#define PERIOD_MS 1s
 }
 
 using namespace sixtron;
 
-static I2C i2c(I2C_SDA, I2C_SCL);
+static I2C i2c(I2C1_SDA, I2C1_SCL);
 static BME280 bme(&i2c, BME280::I2CAddress::Address1);
 
 int main()
@@ -47,5 +47,4 @@ int main()
         printf("Humidity:    %.3f %%\n", bme.humidity());
         ThisThread::sleep_for(PERIOD_MS);
     }
-
 }
