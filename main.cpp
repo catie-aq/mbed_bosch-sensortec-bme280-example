@@ -32,9 +32,6 @@ static BME280 bme(&i2c, BME280::I2CAddress::Address1);
 
 int main()
 {
-    // Prevent incorrect frequency detection from SWO Viewer
-    sleep_manager_lock_deep_sleep();
-
     if (!bme.initialize()) {
         printf("Couldn't initialize the BME280...\n");
         return -1;
@@ -51,6 +48,8 @@ int main()
         printf("\nTemperature: %.3f °C\n",  bme.temperature());
         printf(  "Pressure:    %.3f hPa\n", (bme.pressure() / 100.0f));
         printf(  "Humidity:    %.3f %%\n",  bme.humidity());
+        wait_us(5000);
+
         ThisThread::sleep_for(PERIOD_MS);
     }
 }
