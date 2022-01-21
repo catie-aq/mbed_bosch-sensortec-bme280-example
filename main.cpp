@@ -16,14 +16,18 @@
  */
 #include "mbed.h"
 #include "bme280.h"
+#include "swo.h"
 
 namespace {
-#define PERIOD_MS 1000
+#define PERIOD_MS 1s
 }
 
 using namespace sixtron;
 
-static I2C i2c(I2C_SDA, I2C_SCL);
+SWO swo;
+FileHandle *mbed::mbed_override_console(int) { return &swo; }
+
+static I2C i2c(I2C1_SDA, I2C1_SCL);
 static BME280 bme(&i2c, BME280::I2CAddress::Address1);
 
 int main()
@@ -34,18 +38,18 @@ int main()
     }
 
     bme.set_sampling(BME280::SensorMode::NORMAL,
-            BME280::SensorSampling::OVERSAMPLING_X1,
-            BME280::SensorSampling::OVERSAMPLING_X1,
-            BME280::SensorSampling::OVERSAMPLING_X1,
-            BME280::SensorFilter::OFF,
-            BME280::StandbyDuration::MS_1000);
+                     BME280::SensorSampling::OVERSAMPLING_X1,
+                     BME280::SensorSampling::OVERSAMPLING_X1,
+                     BME280::SensorSampling::OVERSAMPLING_X1,
+                     BME280::SensorFilter::OFF,
+                     BME280::StandbyDuration::MS_1000);
 
     while (true) {
-        printf("\n\rAlive!\n");
-        printf("Temperature: %.3f °C\n", bme.temperature());
-        printf("Pressure:    %.3f hPa\n", (bme.pressure() / 100.0f));
-        printf("Humidity:    %.3f %%\n", bme.humidity());
+        printf("\nTemperature: %.3f °C\n",  bme.temperature());
+        printf(  "Pressure:    %.3f hPa\n", (bme.pressure() / 100.0f));
+        printf(  "Humidity:    %.3f %%\n",  bme.humidity());
+        wait_us(5000);
+
         ThisThread::sleep_for(PERIOD_MS);
     }
-
 }

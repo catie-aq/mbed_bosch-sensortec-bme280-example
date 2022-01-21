@@ -2,3 +2,6 @@
 .mbed
 projectfiles
 *.py*
+custom_targets.json
+zest-core-*/
+swo/
